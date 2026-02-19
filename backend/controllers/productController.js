@@ -20,8 +20,10 @@ const getProducts = async (req, res) => {
     const category = req.query.category ? { category: req.query.category } : {};
 
     const count = await Product.countDocuments({ ...keyword, ...category });
+    // const products = await Product.find({ ...keyword, ...category })
+      // .populate("category", "name")
     const products = await Product.find({ ...keyword, ...category })
-      .populate("category", "name")
+
       .limit(pageSize)
       .skip(pageSize * (page - 1));
 
