@@ -74,7 +74,7 @@ const loginUser = async (req, res) => {
     const token = jwt.sign(
       { id: user._id, role: user.role },
       process.env.JWT_SECRET,
-      { expiresIn: "30s" }   // keep short for testing
+      { expiresIn: "1d" }   // keep short for testing
     );
 
     // Refresh Token (long)
