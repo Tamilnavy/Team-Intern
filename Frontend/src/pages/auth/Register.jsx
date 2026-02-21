@@ -1,6 +1,7 @@
 import { useState } from "react";
 import API from "../../api/axios";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ const Register = () => {
     alert("OTP sent to your email");
     setStep(2);
   };
-
+    
   // Step 2: Register
   const registerUser = async (e) => {
     e.preventDefault();
@@ -91,9 +92,20 @@ const Register = () => {
           </>
         )}
 
-        <button className="bg-green-600 text-white w-full p-2 rounded">
+        <button className="bg-pink-600 text-white w-full p-2 rounded">
           {step === 1 ? "Send OTP" : "Register"}
         </button>
+
+         <p className="text-center mt-6 text-gray-600 text-sm">
+          already have an account{" "}
+          <Link
+            to="/login"
+            className="text-pink-600 font-semibold hover:text-pink-400 transition duration-200"
+            >
+            Login
+          </Link>
+        </p>
+        
       </form>
     </div>
   );
