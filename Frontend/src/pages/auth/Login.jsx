@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 
 const Login = () => {
   const { login } = useContext(AuthContext);
+
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
@@ -12,12 +13,16 @@ const Login = () => {
 
   const submit = async (e) => {
     e.preventDefault();
-    const user = await login(email, password);
+    try {
+      const user = await login(email, password);
 
-    if (user.role === "admin") {
-      navigate("/admin");
-    } else {
-      navigate("/dashboard");
+      if (user.role === "admin") {
+        navigate("/admin");
+      } else {
+        navigate("/dashboard");
+      }
+    } catch (error) {
+      alert(error.response?.data?.message || "Login failed");
     }
   };
 
@@ -46,12 +51,12 @@ const Login = () => {
           <Link
             to="/register"
             className="text-pink-600 font-semibold hover:text-pink-400 transition duration-200"
-            >
+          >
             Register
           </Link>
         </p>
 
-        
+
       </form>
     </div>
   );

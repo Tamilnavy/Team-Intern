@@ -15,6 +15,8 @@ import AdminRoute from "./components/AdminRoute";
 import AddProduct from "./pages/admin/AddProduct";
 import Cart from "./pages/user/Cart";
 import Wishlist from "./pages/user/Wishlist";
+import EditProduct from "./pages/admin/EditProduct";
+import CategoryPage from "./pages/CategoryPage";
 
 function App() {
   return (
@@ -28,6 +30,7 @@ function App() {
         {/* Auth */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/dashboard" element={<UserDashboard/>}/>
 
         {/* Admin Routes */}
         <Route
@@ -38,6 +41,9 @@ function App() {
             </AdminRoute>
           }
         />
+
+        <Route path="/admin/edit-product/:id" element={<EditProduct />} />
+        <Route path="/category/:id" element={<CategoryPage />} />
         
         <Route
   path="/cart"

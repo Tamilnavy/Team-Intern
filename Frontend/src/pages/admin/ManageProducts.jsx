@@ -1,8 +1,13 @@
 import { useEffect, useState } from "react";
 import API from "../../api/axios";
+import AdminLayout from "../../layouts/AdminLayout";
+import { useNavigate } from "react-router-dom";
+
 
 const ManageProducts = () => {
   const [products, setProducts] = useState([]);
+
+  const navigate = useNavigate();
 
   const fetchProducts = async () => {
     const { data } = await API.get("/products");
@@ -14,60 +19,65 @@ const ManageProducts = () => {
   }, []);
 
   const deleteProduct = async (id) => {
+    const confirmed = window.confirm("Are you sure you want to delete this product?");
+    if (!confirmed) return;
     await API.delete(`/products/${id}`);
     fetchProducts();
   };
 
   return (
-    <div className="p-6">
-      <h2 className="text-2xl font-bold mb-6">Manage Products</h2>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {products.map((p) => (
-          <div
-            key={p._id}
-            className="bg-white shadow-lg rounded-lg overflow-hidden"
-          >
-            {/* Product Image */}
-            {p.images && p.images.length > 0 && (
-              <img
-                src={p.images[0]}
-                alt={p.name}
-                className="h-48 w-full object-cover"
-              />
-            )}
 
-            <div className="p-4">
-              <h3 className="text-lg font-bold">{p.name}</h3>
-              <p className="text-sm text-gray-600">{p.brand}</p>
 
-              <p className="mt-2 text-gray-700">
-                {p.description}
-              </p>
+    <AdminLayout>
+      <div className="min-h-screen bg-pink-50 px-6 py-10">
+        <div className="p-6">
+          <h2 className="text-2xl font-bold mb-6">Manage Products</h2>
 
-              <p className="mt-2 font-semibold text-green-600">
-                ₹{p.price}
-              </p>
+          <div className=" grid md:grid-cols-1 lg:grid-cols-3 gap-5">
+            {products.map((p) => (
 
-              <p className="text-sm text-gray-500">
-                Stock: {p.stock}
-              </p>
-
-              <p className="text-sm text-blue-600">
-                Category: {p.category?.name}
-              </p>
-
-              <button
-                onClick={() => deleteProduct(p._id)}
-                className="mt-4 bg-red-500 text-white px-4 py-2 rounded w-full"
+              <div
+                key={p._id}
+                className="border p-4 rounded-lg shadow hover:shadow-xl transition flex flex-col h-full relative bg-white"
               >
-                Delete Product
-              </button>
-            </div>
+                {/* Flipkart style image format */}
+                <div className="w-full h-48 sm:h-56 mb-4 flex items-center justify-center overflow-hidden relative group bg-white">
+                  <img
+                    src={p.images?.[0] }
+                    alt={p.name}
+                    className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+
+                <h2 className="font-bold mt-2">{p.name}</h2>
+                <p className="text-pink-600 font-semibold">₹{p.price}</p>
+                <p className="text-pink-600 font-semibold">{p.description}</p>
+                <p className="text-pink-600 font-semibold">Stock:{p.stock}</p>
+
+                {/* Button container pushed to bottom */}
+                <div className="flex gap-2 mt-auto pt-3">
+                  <button
+                    onClick={() => navigate(`/admin/edit-product/${p._id}`)}
+                    className="bg-gray-400 text-white px-3 py-1 rounded"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => deleteProduct(p._id)}
+                    className="bg-pink-600 text-white px-3 py-1 rounded"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+
+            ))}
           </div>
-        ))}
+        </div>
       </div>
-    </div>
+
+    </AdminLayout>
   );
 };
 

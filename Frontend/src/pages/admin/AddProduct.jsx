@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import API from "../../api/axios";
 import { useNavigate } from "react-router-dom";
+import AdminLayout from "../../layouts/AdminLayout";
 
 const AddProduct = () => {
   const navigate = useNavigate();
@@ -41,7 +42,7 @@ const AddProduct = () => {
     formData.append("name", form.name);
     formData.append("brand", form.brand);
     formData.append("description", form.description);
-    formData.append("category", form.category);  // 🔥 category ID
+    formData.append("category", form.category);  //  category ID
     formData.append("price", form.price);
     formData.append("stock", form.stock);
 
@@ -62,6 +63,7 @@ const AddProduct = () => {
   };
 
   return (
+    <AdminLayout>
     <div className="p-6">
       <h2 className="text-2xl font-bold mb-4">Add Product</h2>
 
@@ -89,7 +91,7 @@ const AddProduct = () => {
           className="border p-2"
         />
 
-        {/* 🔥 Category Dropdown */}
+        {/*Category Dropdown */}
         <select
           name="category"
           onChange={handleChange}
@@ -130,11 +132,12 @@ const AddProduct = () => {
           className="border p-2"
         />
 
-        <button className="bg-green-600 text-white p-2 rounded">
+        <button className="bg-pink-600 text-white p-2 rounded">
           Add Product
         </button>
       </form>
     </div>
+    </AdminLayout>
   );
 };
 

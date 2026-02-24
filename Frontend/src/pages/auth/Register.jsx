@@ -21,28 +21,36 @@ const Register = () => {
   // Step 1: Send OTP
   const sendOtp = async (e) => {
     e.preventDefault();
-    await API.post("/auth/sendotp", {
-      name: form.name,
-      email: form.email,
-    });
+    try {
+      await API.post("/auth/sendotp", {
+        name: form.name,
+        email: form.email,
+      });
 
-    alert("OTP sent to your email");
-    setStep(2);
+      alert("OTP sent to your email");
+      setStep(2);
+    } catch (error) {
+      alert(error.response?.data?.msg || error.response?.data?.message || "Failed to send OTP");
+    }
   };
-    
+
   // Step 2: Register
   const registerUser = async (e) => {
     e.preventDefault();
 
-    await API.post("/auth/register", {
-      name: form.name,
-      email: form.email,
-      password: form.password,
-      otp: form.otp,
-    });
+    try {
+      await API.post("/auth/register", {
+        name: form.name,
+        email: form.email,
+        password: form.password,
+        otp: form.otp,
+      });
 
-    alert("Registration successful");
-    navigate("/login");
+      alert("Registration successful");
+      navigate("/login");
+    } catch (error) {
+      alert(error.response?.data?.message || "Registration failed");
+    }
   };
 
   return (
@@ -96,16 +104,16 @@ const Register = () => {
           {step === 1 ? "Send OTP" : "Register"}
         </button>
 
-         <p className="text-center mt-6 text-gray-600 text-sm">
+        <p className="text-center mt-6 text-gray-600 text-sm">
           already have an account{" "}
           <Link
             to="/login"
             className="text-pink-600 font-semibold hover:text-pink-400 transition duration-200"
-            >
+          >
             Login
           </Link>
         </p>
-        
+
       </form>
     </div>
   );

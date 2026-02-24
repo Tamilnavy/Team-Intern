@@ -1,10 +1,11 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 
 const Navbar = () => {
   const { user, logout } = useContext(AuthContext);
   const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <nav className="bg-gray-900 text-white px-6 py-4 shadow">
@@ -82,8 +83,11 @@ const Navbar = () => {
           {/* Logout */}
           {user && (
             <button
-              onClick={logout}
-              className="bg-red-500 hover:bg-red-600 px-3 py-1 rounded transition"
+              onClick={() => {
+                logout();
+                navigate("/login", { replace: true });
+              }}
+              className="bg-pink-500 hover:bg-pink-600 px-3 py-1 rounded transition"
             >
               Logout
             </button>
@@ -114,6 +118,7 @@ const Navbar = () => {
             </>
           )}
 
+          {/* User Menu (Mobile) */}
           {user && user.role === "user" && (
             <>
               <Link to="/dashboard" onClick={() => setMenuOpen(false)}>
@@ -128,6 +133,7 @@ const Navbar = () => {
             </>
           )}
 
+          {/* Admin Menu (Mobile) */}
           {user && user.role === "admin" && (
             <Link to="/admin" onClick={() => setMenuOpen(false)}>
               Admin Panel
@@ -139,6 +145,7 @@ const Navbar = () => {
               onClick={() => {
                 logout();
                 setMenuOpen(false);
+                navigate("/login", { replace: true });
               }}
               className="bg-red-500 p-1 rounded"
             >

@@ -38,7 +38,7 @@ const Cart = () => {
         </div>
       ) : (
         <div className="grid lg:grid-cols-3 gap-8">
-          
+
           {/* LEFT SIDE - PRODUCTS */}
           <div className="lg:col-span-2 space-y-4">
             {cart.products.map((item) => {
