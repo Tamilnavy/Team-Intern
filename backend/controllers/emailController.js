@@ -13,7 +13,7 @@ exports.sendOtp = async (req, res) => {
     // check if already registered
     const existingUser = await User.findOne({ email });
 
-    if (existingUser) {
+    if (existingUser && existingUser.password) {
       return res.status(400).json({ msg: "User already exists. Please login." });
     }
 

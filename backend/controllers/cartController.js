@@ -8,13 +8,25 @@ const Product = require("../models/product");
 ========================================================= */
 const getCart = async (req, res) => {
   try {
-    const cart = await Cart.findOne({ user: req.user._id }).populate(
+    let cart = await Cart.findOne({ user: req.user._id }).populate(
       "products.product"
     );
 
     if (!cart) {
       return res.json({ products: [], totalAmount: 0 });
     }
+
+    // Always recalculate totalAmount to avoid stale values
+    if (!cart.products || cart.products.length === 0) {
+      cart.totalAmount = 0;
+    } else {
+      cart.totalAmount = cart.products.reduce(
+        (sum, item) => sum + item.quantity * item.priceSnapshot,
+        0
+      );
+    }
+    // Save only if changed (optional, but safe)
+    await cart.save();
 
     res.json(cart);
   } catch (error) {
